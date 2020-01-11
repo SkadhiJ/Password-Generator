@@ -26,6 +26,8 @@
     "@polymer/app-layout": "^3.0.0",
     "@polymer/polymer": "^3.1.0",
     "@webcomponents/webcomponentsjs": "^2.2.4",
+    "crypto-js": "^3.1.9-1",
+    "js-sha256": "^0.9.0",
     "lit-element": "^2.0.1",
     "lit-html": "^1.1.2",
     "pwa-helpers": "^0.9.0",
