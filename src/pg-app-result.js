@@ -1,6 +1,7 @@
 import { css, LitElement } from 'lit-element';
 import { html } from 'lit-html';
 import './shared/pg-button';
+import '@material/mwc-dialog';
 import { copyToClipboard } from './modules/copyToClipboard';
 
 class PgAppResult extends LitElement {
@@ -29,13 +30,14 @@ class PgAppResult extends LitElement {
 
     //language=HTML
     render() {
-        return html`        
-            <h1>Your password:</h1>
-            <div>${this.password}</div>
-            <p>You can now select your password and copy it to your clipboard, or use the "Copy to clipboard" button below.</p>
-            <p>Also, if you're on a publicly accessible computer, don't forget to clear the generator form before you leave the app!</p>
-            <pg-button label="Copy to clipboard" outlined @click="${this.handleClipboardClick}"></pg-button>
-            <pg-button label="Hide"></pg-button>
+        return html`  
+            <mwc-dialog heading="Your password:" open @closed="${(event) => console.log(event)}">
+                <div>${this.password}</div> 
+                <p>You can now select your password and copy it to your clipboard, or use the "Copy to clipboard" button below.</p>
+                <p>Also, if you're on a publicly accessible computer, don't forget to clear the generator form before you leave the app!</p>
+                <pg-button label="Copy to clipboard" slot="primaryAction" outlined @click="${this.handleClipboardClick}"></pg-button>
+                <pg-button label="Hide" slot="secondaryAction" dialogAction="close"></pg-button>
+            </mwc-dialog>
         `;
     }
 

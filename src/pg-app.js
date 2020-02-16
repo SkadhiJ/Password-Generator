@@ -40,9 +40,7 @@ class PgApp extends LitElement {
     }
 
     handlePasswordGenerated(event) {
-        // console.log(this.resultElement.password);
         this.resultElement.password = event.detail.password;
-        // console.log(this.resultElement.password);
     }
 }
 

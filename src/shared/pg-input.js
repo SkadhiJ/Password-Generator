@@ -25,7 +25,10 @@ class PgInput extends LitElement {
             },
             placeholder: {
                 type: String,
-            }
+            },
+            required: {
+                type: Boolean,
+            },
         };
     }
 
@@ -47,19 +50,33 @@ class PgInput extends LitElement {
                 type="${this.type}" 
                 label="${this.label}" 
                 placeholder="${this.placeholder}"
-                @input="${this.handleInput}"
-                >
+                outlined
+                ?required="${this.required}"
+                @input="${this.handleInput}">
             </mwc-textfield>
         `;
     }
 
+    get textfield() {
+        return this.shadowRoot.querySelector('#textfield');
+    }
+
     handleInput() {
-        this.value = this.shadowRoot.querySelector('#textfield').value;
+        this.value = this.textfield.value;
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
                 value: this.value
             }
         }));
+    }
+
+    validate() {
+        if (this.textfield.reportValidity()) {
+            return true;
+        }
+        
+        this.textfield.focus();
+        return false;
     }
 }
 

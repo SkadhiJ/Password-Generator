@@ -35,12 +35,18 @@ class PgAppForm extends LitElement {
     //language=HTML
     render() {
         return html`
-            <pg-input id="${ALIAS_INPUT}" label="Alias" value="yellow"></pg-input>
+            <pg-input 
+                id="${ALIAS_INPUT}" 
+                label="Alias"
+                required>
+            </pg-input>
             <pg-input 
                 id="${SECRET_INPUT}" 
                 label="Secret"
-                @change="${this.handleSecretInput}"
-                ></pg-input>
+                required
+                @change="${this.handleSecretInput}">
+            </pg-input>
+            
             <pg-checkbox 
                 id="${SAVE_SECRET_CHECKBOX}" 
                 label="Save secret" 
@@ -62,6 +68,7 @@ class PgAppForm extends LitElement {
                 text-when-unchecked="Generated password will not be visible."
                 @change="${this.handleShowPasswordCheckboxChange}">
             </pg-checkbox>
+                
             <pg-button id="${GENERATE_BUTTON}" label="Generate" unelevated @click="${this.handleGenerateButtonClick}"></pg-button>
             <pg-button id="${CLEAR_BUTTON}" label="Clear" outlined @click="${this.handleClearButtonClick}"></pg-button>
         `;
@@ -152,8 +159,13 @@ class PgAppForm extends LitElement {
     // --- Buttons -------------------------------------------------------------------------------------------------- //
 
     handleGenerateButtonClick() {
+        if (!this.validateInputs()) {
+            return;
+        }
+
         const alias = this.aliasInput.value;
         const secret = this.secretInput.value;
+
         generatePassword(alias, secret).then((password) => {
             if (this.clipboardCheckbox.checked) {
                 copyToClipboard(password);
@@ -184,6 +196,12 @@ class PgAppForm extends LitElement {
 
     saveSecret() {
         storage.setSecret(this.secretInput.value);
+    }
+
+    validateInputs() {
+        const aliasInputValid = this.aliasInput.validate();
+        const secretInputValid = this.secretInput.validate();
+        return aliasInputValid && secretInputValid;
     }
 
     dispatchPasswordGeneratedEvent(password) {
